@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nutricao/app/modules/login/controllers/login_controller.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
 class LoginPage extends StatelessWidget {
@@ -36,31 +37,62 @@ class LoginPage extends StatelessWidget {
                 style: TextStyle(fontSize: 18.0, color: globals.primaryColor),
               ),
             ),
-            TextField(
-              decoration: InputDecoration(
-                labelText: "Email",
-                hintText: "Insira seu email",
-              ),
+            GetX<LoginController>(
+              init: LoginController(),
+              builder: (_) {
+                return TextField(
+                  onChanged: _.setEmail,
+                  decoration: InputDecoration(
+                      labelText: "Email",
+                      hintText: "Insira seu email",
+                      errorText: _.errorMail),
+                );
+              },
             ),
             Container(
               margin: EdgeInsets.only(top: 20.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: "Senha",
-                  hintText: "Insira sua senha",
-                ),
+              child: GetX<LoginController>(
+                builder: (_) {
+                  return TextField(
+                    onChanged: _.setPassword,
+                    decoration: InputDecoration(
+                      labelText: "Senha",
+                      hintText: "Insira sua senha",
+                    ),
+                  );
+                },
               ),
             ),
             Container(
-              alignment: Alignment.centerRight,
               margin: EdgeInsets.only(top: 10.0),
-              child: FlatButton(
-                color: Globals().primaryColor,
-                onPressed: () {},
-                child: Text(
-                  "Entrar",
-                  style: TextStyle(color: Colors.white),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: (){
+                      Get.snackbar("Em breve!", "Função ainda não implementada.");
+                    },
+                    child: Text(
+                    "Esqueci a senha",
+                    style: TextStyle(fontSize: 18.0, color: globals.blueColor),
+                  ),
+                  ),
+                  FlatButton(
+                    color: Globals().primaryColor,
+                    onPressed: () {
+                      if (Get.find<LoginController>().validFrom) {
+                        // request to login
+                      } else {
+                        Get.snackbar("Preencha todos os campos",
+                            "Preencha os campos corretamente!");
+                      }
+                    },
+                    child: Text(
+                      "Entrar",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )
+                ],
               ),
             ),
             Container(
