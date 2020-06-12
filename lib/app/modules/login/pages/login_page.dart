@@ -68,25 +68,24 @@ class LoginPage extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () {
+                  FlatButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () {
                       Get.snackbar(
-                          "Em breve!", "Função ainda não implementada.");
+                          "Quase", "Essa função ainda não foi implementada");
                     },
-                    child: GestureDetector(
-                      onTap: () => Get.snackbar("Quase", "Essa função ainda não foi implementada :("),
-                      child: Text(
-                        "Esqueci a senha",
-                        style:
-                            TextStyle(fontSize: 18.0, color: globals.blueColor),
-                      ),
+                    child: Text(
+                      "Esqueci a senha",
+                      style:
+                          TextStyle(fontSize: 18.0, color: globals.blueColor),
                     ),
                   ),
                   FlatButton(
                     color: Globals().primaryColor,
                     onPressed: () {
                       if (Get.find<LoginController>().validFrom) {
-                        // request to login
+                        Get.find<LoginController>().login();
                       } else {
                         Get.snackbar("Preencha todos os campos",
                             "Preencha os campos corretamente!");
@@ -103,8 +102,10 @@ class LoginPage extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 40.0),
               alignment: Alignment.center,
-              child: GestureDetector(
-                onTap: () => Get.toNamed("/register"),
+              child: FlatButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onPressed: () => Get.toNamed("/register"),
                 child: Text(
                   "Ainda não tem uma conta? Cadastre-se",
                   style: TextStyle(fontSize: 18.0, color: globals.blueColor),

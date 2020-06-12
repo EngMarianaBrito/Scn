@@ -13,7 +13,11 @@ class SplashScreenController extends RxController {
     setPage(box.get('isLogged') == null ? false : box.get('isLogged'));
   }
 
-  void setLogout() => box.clear();
+  void setLogout() {
+    box.clear();
+    Get.offAndToNamed('/');
+  }
+
   dynamic getPreference(String key) => box.get(key);
   void setPreference(String key, dynamic value) => box.put(key, value);
 

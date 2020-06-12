@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
 
 class LoginController extends RxController {
   final email = ''.obs;
@@ -19,10 +21,45 @@ class LoginController extends RxController {
   void setPassword(String value) => password.value = value;
 
   bool get validFrom {
-    if(errorMail == null && password.value.length > 0){
+    if (errorMail == null && password.value.length > 0) {
       return true;
     }
 
     return false;
+  }
+
+  void login() async {
+    BaseOptions options = BaseOptions(
+        baseUrl: 'https://nutricaoapp.herokuapp.com',
+        connectTimeout: 5000,
+        contentType: 'application/json');
+
+    try {
+      var request = await Dio(options).post('/login',
+          data: {'email': email.value, 'password': password.value});
+
+      if (request.data['token'] != null) {
+        SplashScreenController splashController =
+            Get.find<SplashScreenController>();
+
+        splashController.setPreference('token', request.data['token']);
+        splashController.setPreference('isLogged', true);
+        Get.offAndToNamed('/home');
+      } else if (request.data['error']
+          .toString()
+          .contains('E_PASSWORD_MISMATCH')) {
+        Get.snackbar(
+            'Dados inválidos', 'Verifique se digitou os dados corretamente');
+      } else if (request.data['error']
+          .toString()
+          .contains('E_USER_NOT_FOUND')) {
+        Get.snackbar(
+            'Não cadastrado', 'Você não está cadastrado, crie uma conta');
+      } else {
+        Get.snackbar('Erro', 'Ocorreu algo inesperado');
+      }
+    } catch (e) {
+      Get.snackbar('Erro', 'Ocorreu um erro ao tentar fazer login');
+    }
   }
 }

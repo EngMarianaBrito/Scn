@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/home/controllers/home_controller.dart';
 import 'package:nutricao/app/modules/home/page/widgets/card_nutricionist_widget.dart';
+import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
 class HomePage extends StatelessWidget {
@@ -22,6 +23,21 @@ class HomePage extends StatelessWidget {
         iconTheme: IconThemeData(
           color: globals.primaryColor,
         ),
+        actions: <Widget>[
+          Container(
+              child: FlatButton(
+            onPressed: () {
+              SplashScreenController splashController =
+                  Get.find<SplashScreenController>();
+              splashController.setLogout();
+            },
+            child: Icon(
+              Icons.exit_to_app,
+              size: 22.0,
+              color: globals.primaryColor,
+            ),
+          ))
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.only(left: 10.0, right: 10.0),
@@ -47,8 +63,8 @@ class HomePage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return Container(
-                      margin:
-                          EdgeInsets.only(top: 5.0, left: 4.0, right: 4.0, bottom: 10.0),
+                      margin: EdgeInsets.only(
+                          top: 5.0, left: 4.0, right: 4.0, bottom: 10.0),
                       child: TextField(
                         decoration: InputDecoration(
                           labelText: "Pesquise",
@@ -59,8 +75,11 @@ class HomePage extends StatelessWidget {
                     );
                   } else {
                     var infos = _.data.data;
-                    return CardNutricionist(infos[index-1].name,
-                        infos[index-1].formation, infos[index-1].stars.toDouble(), 'https://cdn.tatame.com.br/wp-content/uploads/2020/06/Terry-Crews-e1591376031946.jpg');
+                    return CardNutricionist(
+                        infos[index - 1].name,
+                        infos[index - 1].formation,
+                        infos[index - 1].stars.toDouble(),
+                        'https://cdn.tatame.com.br/wp-content/uploads/2020/06/Terry-Crews-e1591376031946.jpg');
                   }
                 },
               );

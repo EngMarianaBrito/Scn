@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
+import 'package:nutricao/app/shared/globals.dart';
 
 class SplashScreen extends StatelessWidget {
   final SplashScreenController splashController =
       Get.put(SplashScreenController());
-
+  final Globals globals = Get.put<Globals>(Globals());
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
