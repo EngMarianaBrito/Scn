@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/register/controllers/register_controller.dart';
@@ -14,16 +13,19 @@ class RegisterPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.transparent,
-        title: Image.asset(
-          "assets/images/logo.png",
-          fit: BoxFit.contain,
-          width: 50.0,
-          height: 50.0,
+        title: GetX<RegisterController>(
+          builder: (_) => Image.asset(
+            "assets/images/logo.png",
+            fit: BoxFit.contain,
+            width: 50.0,
+            height: 50.0,
+          ),
         ),
         centerTitle: true,
         iconTheme: IconThemeData(
           color: globals.primaryColor,
         ),
+        actions: <Widget>[],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
@@ -118,7 +120,9 @@ class RegisterPage extends StatelessWidget {
                   child: AnimatedContainer(
                     duration: Duration(seconds: 1),
                     height: controller.typeAccount.value == 1 ? 80.0 : 0.0,
-                    margin: EdgeInsets.only(top: 20.0, bottom: controller.errorCrn != null ? 15.0 : 0.0),
+                    margin: EdgeInsets.only(
+                        top: 20.0,
+                        bottom: controller.errorCrn != null ? 15.0 : 0.0),
                     child: Visibility(
                       visible: controller.typeAccount.value == 1,
                       child: GetX<RegisterController>(
@@ -126,10 +130,9 @@ class RegisterPage extends StatelessWidget {
                           return TextField(
                             onChanged: controller.setCRN,
                             decoration: InputDecoration(
-                              labelText: "CRN",
-                              hintText: "Insira seu CRN",
-                              errorText: controller.errorCrn
-                            ),
+                                labelText: "CRN",
+                                hintText: "Insira seu CRN",
+                                errorText: controller.errorCrn),
                           );
                         },
                       ),
@@ -250,10 +253,11 @@ class RegisterPage extends StatelessWidget {
                               ? globals.primaryColor
                               : globals.blueColor,
                           onPressed: () {
-                            if(controller.formValid){
+                            if (controller.formValid) {
                               //call API REST
                             } else {
-                              Get.snackbar("Preencha todos os campos!", "Por favor, preencha todos os campos");
+                              Get.snackbar("Preencha todos os campos!",
+                                  "Por favor, preencha todos os campos");
                             }
                           },
                           child: Text(

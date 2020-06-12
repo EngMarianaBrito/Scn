@@ -1,12 +1,12 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/login/controllers/login_controller.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
 class LoginPage extends StatelessWidget {
-  final Globals globals = Get.put(Globals());
+  final Globals globals = Get.put<Globals>(Globals());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,13 +69,18 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: (){
-                      Get.snackbar("Em breve!", "Função ainda não implementada.");
+                    onTap: () {
+                      Get.snackbar(
+                          "Em breve!", "Função ainda não implementada.");
                     },
-                    child: Text(
-                    "Esqueci a senha",
-                    style: TextStyle(fontSize: 18.0, color: globals.blueColor),
-                  ),
+                    child: GestureDetector(
+                      onTap: () => Get.snackbar("Quase", "Essa função ainda não foi implementada :("),
+                      child: Text(
+                        "Esqueci a senha",
+                        style:
+                            TextStyle(fontSize: 18.0, color: globals.blueColor),
+                      ),
+                    ),
                   ),
                   FlatButton(
                     color: Globals().primaryColor,
