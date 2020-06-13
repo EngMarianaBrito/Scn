@@ -13,7 +13,6 @@ class NutricionistData {
           options: Options(headers: {'Authorization': 'Bearer $token'}));
 
       final data = {"data": response.data};
-
       return Nutricionist.fromJson(data);
     } catch (e) {
       print(e.toString());

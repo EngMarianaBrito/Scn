@@ -46,7 +46,8 @@ class LoginController extends RxController {
         splashController.setPreference('token', request.data['token']);
         splashController.setPreference('isLogged', true);
         splashController.setPreference('user_id', request.data['user_id']);
-        Get.changeTheme(appTheme(request.data['account_type'] == 1 ? 'nutritionist' : 'patient'));
+        Get.changeTheme(appTheme(
+            request.data['account_type'] == 1 ? 'nutritionist' : 'patient'));
         Get.offAllNamed('/home');
       } else if (request.data['error']
           .toString()

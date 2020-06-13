@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/home/controllers/home_controller.dart';
 import 'package:nutricao/app/modules/home/page/widgets/card_nutricionist_widget.dart';
+import 'package:nutricao/app/modules/login/controllers/login_controller.dart';
+import 'package:nutricao/app/modules/register/controllers/register_controller.dart';
 import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
@@ -45,14 +47,20 @@ class HomePage extends StatelessWidget {
           init: HomeController(),
           initState: (_) {
             HomeController.to.fetchNutricionist();
+            Get.delete<LoginController>();
+            Get.delete<RegisterController>();
           },
           builder: (_) {
             if (_.data == null) {
               return Center(
-                child: CircularProgressIndicator(
-                  valueColor:
-                      new AlwaysStoppedAnimation<Color>(Get.theme.primaryColor),
-                ),
+                child: _.hasError.value
+                    ? Container(
+                        child: Text('Ocorreu um erro ao obter os dados'),
+                      )
+                    : CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            Get.theme.primaryColor),
+                      ),
               );
             } else if (_.data.data.length == 0) {
               return Container(
@@ -61,7 +69,7 @@ class HomePage extends StatelessWidget {
               );
             } else {
               return RefreshIndicator(
-                onRefresh: (){
+                onRefresh: () {
                   return HomeController.to.fetchNutricionist();
                 },
                 color: Theme.of(context).primaryColor,
@@ -75,10 +83,9 @@ class HomePage extends StatelessWidget {
                             top: 5.0, left: 4.0, right: 4.0, bottom: 10.0),
                         child: TextField(
                           decoration: InputDecoration(
-                            labelText: "Pesquise",
-                            hintText: "Insira o nome do profissional",
-                            suffixIcon: Icon(Icons.search)
-                          ),
+                              labelText: "Pesquise",
+                              hintText: "Insira o nome do profissional",
+                              suffixIcon: Icon(Icons.search)),
                         ),
                       );
                     } else {

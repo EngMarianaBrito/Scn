@@ -6,6 +6,7 @@ class HomeController extends GetController {
   static HomeController get to => Get.find();
 
   Nutricionist data;
+  final hasError = false.obs;
 
   Future<void> fetchNutricionist() async {
     NutricionistData api = NutricionistData();
@@ -14,6 +15,7 @@ class HomeController extends GetController {
 
     if(response == null){
       Get.snackbar("Erro", "Não foi possível obter os dados");
+      hasError.value = true;
     } else {
       data = response;
       update();
