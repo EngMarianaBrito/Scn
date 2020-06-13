@@ -6,7 +6,6 @@ import 'package:nutricao/app/shared/globals.dart';
 
 class LoginPage extends StatelessWidget {
   final Globals globals = Get.put<Globals>(Globals());
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +17,7 @@ class LoginPage extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 100.0, bottom: 10.0),
               child: Image.asset(
-                "assets/images/logo.png",
+                globals.logo,
                 fit: BoxFit.contain,
                 width: 100.0,
                 height: 100.0,
@@ -54,6 +53,7 @@ class LoginPage extends StatelessWidget {
               child: GetX<LoginController>(
                 builder: (_) {
                   return TextField(
+                    obscureText: true,
                     onChanged: _.setPassword,
                     decoration: InputDecoration(
                       labelText: "Senha",

@@ -7,7 +7,7 @@ class HomeController extends GetController {
 
   Nutricionist data;
 
-  void fetchNutricionist() async {
+  Future<void> fetchNutricionist() async {
     NutricionistData api = NutricionistData();
 
     var response = await api.fetchData();

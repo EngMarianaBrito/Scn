@@ -14,7 +14,7 @@ class HomePage extends StatelessWidget {
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         title: Image.asset(
-          "assets/images/logo.png",
+          globals.logo,
           fit: BoxFit.contain,
           width: 50.0,
           height: 50.0,
@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
             child: Icon(
               Icons.exit_to_app,
               size: 22.0,
-              color: globals.primaryColor,
+              color: Theme.of(context).primaryColor,
             ),
           ))
         ],
@@ -49,7 +49,10 @@ class HomePage extends StatelessWidget {
           builder: (_) {
             if (_.data == null) {
               return Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor:
+                      new AlwaysStoppedAnimation<Color>(Get.theme.primaryColor),
+                ),
               );
             } else if (_.data.data.length == 0) {
               return Container(
@@ -57,31 +60,50 @@ class HomePage extends StatelessWidget {
                 child: Text("Ainda não há profissionais disponíveis."),
               );
             } else {
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: _.data.data.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Container(
-                      margin: EdgeInsets.only(
-                          top: 5.0, left: 4.0, right: 4.0, bottom: 10.0),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          labelText: "Pesquise",
-                          hintText: "Insira o nome do profissional",
-                          suffixIcon: Icon(Icons.search),
-                        ),
-                      ),
-                    );
-                  } else {
-                    var infos = _.data.data;
-                    return CardNutricionist(
-                        infos[index - 1].name,
-                        infos[index - 1].formation,
-                        infos[index - 1].stars.toDouble(),
-                        'https://cdn.tatame.com.br/wp-content/uploads/2020/06/Terry-Crews-e1591376031946.jpg');
-                  }
+              return RefreshIndicator(
+                onRefresh: (){
+                  return HomeController.to.fetchNutricionist();
                 },
+                color: Theme.of(context).primaryColor,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _.data.data.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Container(
+                        margin: EdgeInsets.only(
+                            top: 5.0, left: 4.0, right: 4.0, bottom: 10.0),
+                        child: TextField(
+                          decoration: InputDecoration(
+                            labelText: "Pesquise",
+                            hintText: "Insira o nome do profissional",
+                            suffixIcon: Icon(Icons.search)
+                          ),
+                        ),
+                      );
+                    } else {
+                      var infos = _.data.data;
+                      var userID =
+                          Get.find<SplashScreenController>().box.get('user_id');
+                      return userID == infos[index - 1].userId
+                          ? Opacity(
+                              opacity: _.data.data.length == 1 ? 1.0 : 0.0,
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    top: _.data.data.length == 1 ? 20.0 : 0.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                    'Ainda não há profissionais disponíveis'),
+                              ),
+                            )
+                          : CardNutricionist(
+                              infos[index - 1].name,
+                              infos[index - 1].formation,
+                              infos[index - 1].stars.toDouble(),
+                              infos[index - 1].profileImage);
+                    }
+                  },
+                ),
               );
             }
           },

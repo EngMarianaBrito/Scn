@@ -15,7 +15,7 @@ class RegisterPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: GetX<RegisterController>(
           builder: (_) => Image.asset(
-            "assets/images/logo.png",
+            globals.logo,
             fit: BoxFit.contain,
             width: 50.0,
             height: 50.0,
@@ -254,7 +254,7 @@ class RegisterPage extends StatelessWidget {
                               : globals.blueColor,
                           onPressed: () {
                             if (controller.formValid) {
-                              //call API REST
+                              controller.register();
                             } else {
                               Get.snackbar("Preencha todos os campos!",
                                   "Por favor, preencha todos os campos");

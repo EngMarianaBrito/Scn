@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
           initState: (_) {
             splashController.init();
           },
-          builder: (_) => Image.asset("assets/images/logo.png",
+          builder: (_) => Image.asset(globals.logo,
               width: 120.0, height: 120.0),
         ),
       ),

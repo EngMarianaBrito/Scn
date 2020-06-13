@@ -22,36 +22,48 @@ class Nutricionist {
 
 class Datum {
     Datum({
+        this.id,
+        this.userId,
+        this.stars,
         this.name,
+        this.description,
         this.formation,
         this.crn,
-        this.stars,
-        this.description,
+        this.profileImage,
     });
 
+    final int id;
+    final int userId;
+    final int stars;
     final String name;
+    final dynamic description;
     final String formation;
     final String crn;
-    final dynamic stars;
-    final String description;
+    final String profileImage;
 
     factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
 
     String toRawJson() => json.encode(toJson());
 
     factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+        id: json["id"] == null ? null : json["id"],
+        userId: json["user_id"] == null ? null : json["user_id"],
+        stars: json["stars"] == null ? null : json["stars"],
         name: json["name"] == null ? null : json["name"],
+        description: json["description"],
         formation: json["formation"] == null ? null : json["formation"],
         crn: json["crn"] == null ? null : json["crn"],
-        stars: json["stars"] == null ? null : json["stars"],
-        description: json["description"] == null ? null : json["description"],
+        profileImage: json["profile_image"] == null ? null : json["profile_image"],
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "user_id": userId == null ? null : userId,
+        "stars": stars == null ? null : stars,
         "name": name == null ? null : name,
+        "description": description,
         "formation": formation == null ? null : formation,
         "crn": crn == null ? null : crn,
-        "stars": stars == null ? null : stars,
-        "description": description == null ? null : description,
+        "profile_image": profileImage == null ? null : profileImage,
     };
 }

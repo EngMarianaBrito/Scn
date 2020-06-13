@@ -1,7 +1,11 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nutricao/app/modules/login/controllers/login_controller.dart';
+import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
 import 'package:nutricao/app/shared/theme.dart';
 
 class RegisterController extends RxController {
@@ -16,15 +20,33 @@ class RegisterController extends RxController {
     }
   }
 
+  File img;
+  var pickedFile;
   final profileImage = ''.obs;
   void setProfileImage() async {
     try {
-      final pickedFile = await ImagePicker()
+      pickedFile = await ImagePicker()
           .getImage(source: ImageSource.camera, imageQuality: 100);
       profileImage.value = pickedFile.path.toString();
+
+      img = File(pickedFile.path);
     } catch (e) {
       Get.snackbar("Tente novamente!", "Não foi possível guardar sua imagem.");
     }
+  }
+
+  Future<String> upload() async {
+    final FirebaseStorage _storage =
+        FirebaseStorage(storageBucket: 'gs://egs-nutricao.appspot.com');
+
+    StorageUploadTask _task;
+
+    var _ref = _storage.ref().child('${DateTime.now()}.png');
+
+    _task = _ref.putFile(img);
+
+    var _downloadLink = await (await _task.onComplete).ref.getDownloadURL();
+    return _downloadLink.toString();
   }
 
   final name = ''.obs;
@@ -87,8 +109,7 @@ class RegisterController extends RxController {
     String url = 'https://viacep.com.br/ws/' + cep.value + '/json';
 
     try {
-      var dio = Dio();
-      var response = await dio.get(url);
+      var response = await Dio().get(url);
       addersController.text = response.data['bairro'] +
           ' - ' +
           response.data['logradouro'] +
@@ -149,6 +170,9 @@ class RegisterController extends RxController {
     return null;
   }
 
+  final formation = ''.obs;
+  void setFormation(String value) => formation.value = value;
+
   bool get formValid {
     final errorFields = [
       errorName,
@@ -187,5 +211,49 @@ class RegisterController extends RxController {
     }
 
     return true;
+  }
+
+  void register() async {
+    // set animation loading
+    Get.find<SplashScreenController>().isLoading(loading: true);
+
+    try {
+      String image = await upload();
+
+      var request =
+          await Get.find<SplashScreenController>().dio.post('/register', data: {
+        'name': name.value,
+        'email': email.value,
+        'crn': crn.value,
+        'descripition': null,
+        'formation': typeAccount.value == 1 ? 'Nutricionista' : 'Paciente',
+        "account_type": typeAccount.value,
+        'password': password.value,
+        'cep': cep.value,
+        'adders': adders.value,
+        'house_number': houseNumber.value,
+        'profile_image': image
+      });
+
+      // set animation loading
+      Get.find<SplashScreenController>().isLoading(hasFinished: true);
+
+      if (request.data['name'] != null) {
+        final LoginController loginController = Get.find<LoginController>();
+        loginController.setEmail(email.value);
+        loginController.setPassword(password.value);
+        loginController.login();
+      } else if (request.data['message'].toString().contains('Esse email')) {
+        Get.snackbar('Dados inválidos', 'Este email já está cadastrado');
+      } else if (request.data.toString().contains('null value in column')) {
+        Get.snackbar('Dados inválidos', 'Preenhca todos os dados');
+      } else {
+        Get.snackbar('Erro', 'Ocorreu algo inesperado');
+      }
+    } catch (e) {
+      // set animation loading
+      Get.find<SplashScreenController>().isLoading(hasFinished: true);
+      Get.snackbar('Erro', 'Ocorreu um erro ao tentar fazer login');
+    }
   }
 }

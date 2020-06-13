@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
+import 'package:nutricao/app/shared/theme.dart';
 
 class LoginController extends RxController {
   final email = ''.obs;
@@ -29,14 +29,15 @@ class LoginController extends RxController {
   }
 
   void login() async {
-    BaseOptions options = BaseOptions(
-        baseUrl: 'https://nutricaoapp.herokuapp.com',
-        connectTimeout: 5000,
-        contentType: 'application/json');
+    // set animation loading
+    Get.find<SplashScreenController>().isLoading(loading: true);
 
     try {
-      var request = await Dio(options).post('/login',
+      var request = await Get.find<SplashScreenController>().dio.post('/login',
           data: {'email': email.value, 'password': password.value});
+
+      // set animation loading
+      Get.find<SplashScreenController>().isLoading(hasFinished: true);
 
       if (request.data['token'] != null) {
         SplashScreenController splashController =
@@ -44,7 +45,9 @@ class LoginController extends RxController {
 
         splashController.setPreference('token', request.data['token']);
         splashController.setPreference('isLogged', true);
-        Get.offAndToNamed('/home');
+        splashController.setPreference('user_id', request.data['user_id']);
+        Get.changeTheme(appTheme(request.data['account_type'] == 1 ? 'nutritionist' : 'patient'));
+        Get.offAllNamed('/home');
       } else if (request.data['error']
           .toString()
           .contains('E_PASSWORD_MISMATCH')) {
@@ -59,6 +62,8 @@ class LoginController extends RxController {
         Get.snackbar('Erro', 'Ocorreu algo inesperado');
       }
     } catch (e) {
+      // set animation loading
+      Get.find<SplashScreenController>().isLoading(hasFinished: true);
       Get.snackbar('Erro', 'Ocorreu um erro ao tentar fazer login');
     }
   }
