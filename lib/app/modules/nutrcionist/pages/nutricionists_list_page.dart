@@ -13,8 +13,6 @@ class NutricionistListPage extends StatelessWidget {
           init: NutricionistListController(),
           initState: (_) {
             NutricionistListController.to.fetchNutricionist();
-            // Get.delete<LoginController>();
-            // Get.delete<RegisterController>();
           },
           builder: (_) {
             if (_.data == null) {

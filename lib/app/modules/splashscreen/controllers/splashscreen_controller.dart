@@ -33,8 +33,9 @@ class SplashScreenController extends RxController {
   void setPreference(String key, dynamic value) => box.put(key, value);
 
   void setPage(bool isLogged) {
-    Future.delayed(Duration(milliseconds: 500));
-    isLogged ? Get.offAndToNamed('/home') : Get.offAndToNamed('/login');
+    Future.delayed(Duration(milliseconds: 1500)).then((value) => {
+      isLogged ? Get.offAndToNamed('/home') : Get.offAndToNamed('/login')
+    });
   }
 
   //loading animation

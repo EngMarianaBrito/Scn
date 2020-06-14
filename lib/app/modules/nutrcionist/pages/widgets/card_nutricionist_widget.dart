@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+import 'package:nutricao/app/modules/nutrcionist/pages/nutricionist_profile_page.dart';
 
 class CardNutricionist extends StatelessWidget {
   final double rating;
@@ -8,65 +10,96 @@ class CardNutricionist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: 120.0,
-            height: 100.0,
-            alignment: Alignment.center,
-            child: Image.network(
-              profileImage,
-              fit: BoxFit.cover,
-              width: 120.0,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.all(5.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    name,
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.verified_user,
-                          size: 16.0,
-                        ),
-                        Text(
-                          formation,
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0),
-                    child: SmoothStarRating(
-                      rating: rating,
-                      isReadOnly: true,
-                      size: 20,
-                      filledIconData: Icons.star,
-                      halfFilledIconData: Icons.star_half,
-                      defaultIconData: Icons.star_border,
-                      starCount: 5,
-                      allowHalfRating: true,
-                      spacing: 2.0,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
+    return ListTile(
+      onTap: () => Get.to(ProfileNutricionistPage(name, formation, rating, profileImage)),
+      title: Text(name),
+      subtitle: Container(
+          margin: EdgeInsets.only(top: 5.0),
+          child: SmoothStarRating(
+            rating: rating,
+            isReadOnly: true,
+            size: 20,
+            filledIconData: Icons.star,
+            halfFilledIconData: Icons.star_half,
+            defaultIconData: Icons.star_border,
+            starCount: 5,
+            allowHalfRating: true,
+            spacing: 2.0,
+          )),
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Theme.of(context).primaryColor,
+        backgroundImage: NetworkImage(
+          profileImage,
+        ),
+      ),
+      trailing: Icon(
+        Icons.keyboard_arrow_right,
+        color: Theme.of(context).primaryColor,
       ),
     );
+
+    //old card
+
+    // return Card(
+    //   child: Row(
+    //     children: <Widget>[
+    //       Container(
+    //         width: 120.0,
+    //         height: 100.0,
+    //         alignment: Alignment.center,
+    //         child: Image.network(
+    //           profileImage,
+    //           fit: BoxFit.cover,
+    //           width: 120.0,
+    //         ),
+    //       ),
+    //       Expanded(
+    //         child: Padding(
+    //           padding: EdgeInsets.all(5.0),
+    //           child: Column(
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             mainAxisAlignment: MainAxisAlignment.start,
+    //             children: <Widget>[
+    //               Text(
+    //                 name,
+    //                 style: TextStyle(fontSize: 18.0),
+    //               ),
+    //               Container(
+    //                 margin: EdgeInsets.only(top: 10.0),
+    //                 child: Row(
+    //                   children: <Widget>[
+    //                     Icon(
+    //                       Icons.verified_user,
+    //                       size: 16.0,
+    //                     ),
+    //                     Text(
+    //                       formation,
+    //                       style: TextStyle(fontSize: 16.0),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //               Container(
+    //                 margin: EdgeInsets.only(top: 10.0),
+    //                 child: SmoothStarRating(
+    //                   rating: rating,
+    //                   isReadOnly: true,
+    //                   size: 20,
+    //                   filledIconData: Icons.star,
+    //                   halfFilledIconData: Icons.star_half,
+    //                   defaultIconData: Icons.star_border,
+    //                   starCount: 5,
+    //                   allowHalfRating: true,
+    //                   spacing: 2.0,
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ),
+    //       )
+    //     ],
+    //   ),
+    // );
   }
 }

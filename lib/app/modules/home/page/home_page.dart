@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/home/controllers/home_controller.dart';
+import 'package:nutricao/app/modules/login/controllers/login_controller.dart';
 import 'package:nutricao/app/modules/nutrcionist/pages/nutricionists_list_page.dart';
+import 'package:nutricao/app/modules/register/controllers/register_controller.dart';
 import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
+import 'package:nutricao/app/modules/appointment/pages/pacient_page.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
 class HomePage extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
+  final SplashScreenController splashController =
+      Get.find<SplashScreenController>();
 
   final List<Widget> tabs = [
     NutricionistListPage(),
-    Container(
-      color: Colors.blue,
-    )
+    PacientAppointmentPage()
   ];
+
   @override
   Widget build(BuildContext context) {
     final Globals globals = Get.find();
@@ -47,22 +51,53 @@ class HomePage extends StatelessWidget {
           ))
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: controller.changeIndex,
-        currentIndex: controller.currentIndex.value,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Início')
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
-            title: Text('Consultas')
-          )
-        ],
+      bottomNavigationBar: GetX<HomeController>(
+        builder: (_) => BottomNavigationBar(
+          onTap: controller.changeIndex,
+          currentIndex: controller.currentIndex.value,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.home,
+                color: controller.currentIndex.value == 0
+                    ? Theme.of(context).primaryColor
+                    : Colors.grey,
+              ),
+              title: Text(
+                'Início',
+                style: TextStyle(
+                  color: controller.currentIndex.value == 0
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey,
+                ),
+              ),
+            ),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.schedule,
+                  color: controller.currentIndex.value == 1
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey,
+                ),
+                title: Text(
+                  splashController.box.get('account_type') == 0
+                      ? 'Minhas consultas'
+                      : 'Consultas agendadas',
+                  style: TextStyle(
+                    color: controller.currentIndex.value == 1
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey,
+                  ),
+                ))
+          ],
+        ),
       ),
       body: GetX<HomeController>(
-        builder: (_){
+        initState: (_) {
+          Get.delete<LoginController>();
+          Get.delete<RegisterController>();
+        },
+        builder: (_) {
           return tabs[controller.currentIndex.value];
         },
       ),

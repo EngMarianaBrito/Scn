@@ -13,11 +13,7 @@ class RegisterController extends RxController {
   void setTypeAccount(int value) {
     typeAccount.value = value;
 
-    if (value == 1) {
-      Get.changeTheme(appTheme('nutritionist'));
-    } else {
-      Get.changeTheme(appTheme('patient'));
-    }
+    value == 1 ? Get.changeTheme(appTheme('nutritionist')) : Get.changeTheme(appTheme('patient'));
   }
 
   File img;
@@ -26,7 +22,7 @@ class RegisterController extends RxController {
   void setProfileImage() async {
     try {
       pickedFile = await ImagePicker()
-          .getImage(source: ImageSource.camera, imageQuality: 100);
+          .getImage(source: ImageSource.camera, imageQuality: 50);
       profileImage.value = pickedFile.path.toString();
 
       img = File(pickedFile.path);
@@ -41,7 +37,7 @@ class RegisterController extends RxController {
 
     StorageUploadTask _task;
 
-    var _ref = _storage.ref().child('${DateTime.now()}.png');
+    var _ref = _storage.ref().child('${UniqueKey().toString()}.png');
 
     _task = _ref.putFile(img);
 
