@@ -51,7 +51,7 @@ class ProfileNutricionistPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   if (index == 0) {
                     return Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.only(left: 10.0, right: 10.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
