@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:nutricao/app/modules/home/models/nutricionist_model.dart';
+import 'package:nutricao/app/modules/nutrcionist/models/nutricionist_list_model.dart';
 import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
 
 class NutricionistData {

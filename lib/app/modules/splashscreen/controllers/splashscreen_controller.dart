@@ -16,7 +16,6 @@ class SplashScreenController extends RxController {
     //set API configs
     BaseOptions options = BaseOptions(
         baseUrl: 'https://nutricaoapp.herokuapp.com',
-        connectTimeout: 5000,
         contentType: 'application/json');
 
     //init Dio
