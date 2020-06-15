@@ -21,4 +21,12 @@ class NutricionistListController extends GetController {
       update();
     }
   }
+
+  final searchQuery = ''.obs;
+
+  void changeSearchQuery(String value){
+    searchQuery.value = value;
+    print(value);
+    update();
+  }
 }
