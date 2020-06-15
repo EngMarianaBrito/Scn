@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:nutricao/app/modules/home/controllers/home_controller.dart';
 import 'package:nutricao/app/modules/login/controllers/login_controller.dart';
 import 'package:nutricao/app/modules/nutrcionist/pages/nutricionists_list_page.dart';
-import 'package:nutricao/app/modules/register/controllers/register_controller.dart';
 import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
 import 'package:nutricao/app/modules/appointment/pages/pacient_page.dart';
 import 'package:nutricao/app/shared/globals.dart';
@@ -95,7 +94,6 @@ class HomePage extends StatelessWidget {
       body: GetX<HomeController>(
         initState: (_) {
           Get.delete<LoginController>();
-          Get.delete<RegisterController>();
         },
         builder: (_) {
           return tabs[controller.currentIndex.value];

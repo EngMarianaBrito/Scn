@@ -73,7 +73,7 @@ class RegisterPage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(right: 10.0),
                     child: GestureDetector(
-                      onTap: controller.setProfileImage,
+                      onTap: Get.find<RegisterController>().setProfileImage,
                       child: GetX<RegisterController>(
                         builder: (_) {
                           return controller.profileImage.value != ""
