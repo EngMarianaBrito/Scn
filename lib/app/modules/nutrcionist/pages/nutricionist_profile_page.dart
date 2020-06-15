@@ -1,98 +1,131 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:nutricao/app/modules/nutrcionist/controllers/nutricionist_list_controller.dart';
-import 'package:nutricao/app/modules/nutrcionist/pages/widgets/card_nutricionist_widget.dart';
-import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
+import 'package:nutricao/app/modules/nutrcionist/pages/nutrcionist_request_page.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
-class NutricionistListPage extends StatelessWidget {
+class ProfileNutricionistPage extends StatefulWidget {
+  final double rating;
+  final String name, formation, profileImage;
+  ProfileNutricionistPage(
+      this.name, this.formation, this.rating, this.profileImage);
+
+  @override
+  _ProfileNutricionistPageState createState() =>
+      _ProfileNutricionistPageState();
+}
+
+class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
+  var top = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 10.0, right: 10.0),
-      child: GetBuilder<NutricionistListController>(
-        init: NutricionistListController(),
-        initState: (_) {
-          NutricionistListController.to.fetchNutricionist();
-        },
-        builder: (_) {
-          if (_.data == null) {
-            return Center(
-              child: _.hasError.value
-                  ? Container(
-                      child: Text('Ocorreu um erro ao obter os dados'),
-                    )
-                  : CircularProgressIndicator(
-                      valueColor: new AlwaysStoppedAnimation<Color>(
-                          Get.theme.primaryColor),
-                    ),
-            );
-          } else if (_.data.data.length == 0) {
-            return Container(
-              alignment: Alignment.center,
-              child: Text("Ainda não há profissionais disponíveis."),
-            );
-          } else {
-            return RefreshIndicator(
-              onRefresh: () {
-                return NutricionistListController.to.fetchNutricionist();
-              },
-              color: Theme.of(context).primaryColor,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: _.data.data.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Container(
-                      margin: EdgeInsets.only(
-                          top: 5.0, left: 4.0, right: 4.0, bottom: 10.0),
-                      child: TextField(
-                        onChanged: _.changeSearchQuery,
-                        decoration: InputDecoration(
-                            labelText: "Pesquise",
-                            hintText: "Insira o nome do profissional",
-                            suffixIcon: Icon(Icons.search)),
+    final double _width = MediaQuery.of(context).size.width;
+    return Scaffold(
+        body: NestedScrollView(
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return <Widget>[
+          SliverAppBar(
+              expandedHeight: 350.0,
+              floating: false,
+              pinned: true,
+              flexibleSpace: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                top = constraints.biggest.height;
+                return FlexibleSpaceBar(
+                    background: Stack(
+                  children: <Widget>[
+                    Container(
+                      width: _width,
+                      child: Image.network(
+                        widget.profileImage,
+                        width: _width,
                       ),
-                    );
-                  } else {
-                    var infos = _.data.data;
-                    var userID =
-                        Get.find<SplashScreenController>().box.get('user_id');
-
-                    if (userID == infos[index - 1].userId) {
-                      return Opacity(
-                        opacity: _.data.data.length == 1 ? 1.0 : 0.0,
-                        child: Container(
-                          margin: EdgeInsets.only(
-                              top: _.data.data.length == 1 ? 20.0 : 0.0),
-                          alignment: Alignment.center,
-                          child: Text('Ainda não há profissionais disponíveis'),
-                        ),
-                      );
-                    } else if (Get.find<NutricionistListController>().searchQuery.value ==
-                            null ||
-                        Get.find<NutricionistListController>().searchQuery.value == '') {
-                      return CardNutricionist(
-                          infos[index - 1].name,
-                          infos[index - 1].formation,
-                          infos[index - 1].stars.toDouble(),
-                          infos[index - 1].profileImage);
-                    } else if (infos[index - 1].name.toLowerCase().contains(
-                        Get.find<NutricionistListController>().searchQuery.value)) {
-                      return CardNutricionist(
-                          infos[index - 1].name,
-                          infos[index - 1].formation,
-                          infos[index - 1].stars.toDouble(),
-                          infos[index - 1].profileImage);
-                    } else {
-                      return Container();
-                    }
-                  }
-                },
-              ),
-            );
-          }
-        },
+                    ),
+                  ],
+                ));
+              })),
+        ];
+      },
+      body: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(
+                    widget.name,
+                    style: TextStyle(
+                        fontSize: 22.0, color: Theme.of(context).primaryColor),
+                  ),
+                  subtitle: Text(widget.formation),
+                  trailing: SmoothStarRating(
+                    rating: widget.rating,
+                    isReadOnly: true,
+                    size: 20,
+                    filledIconData: Icons.star,
+                    halfFilledIconData: Icons.star_half,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    allowHalfRating: true,
+                    spacing: 2.0,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: Text(
+                    'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem'
+                    'ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum;',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: FlatButton(
+                    onPressed: () => Get.to(NutricionistRequestPage()),
+                    color: Theme.of(context).primaryColor,
+                    child: Text(
+                      'Solicitar consulta',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  child: Divider(),
+                ),
+                Container(
+                  child: Text(
+                    'Avaliações',
+                    style: TextStyle(
+                        fontSize: 22.0, color: Theme.of(context).primaryColor),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 2 + 1,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) {
+                  return Container(
+                      margin: EdgeInsets.only(top: 5.0),
+                      child: ListTile(
+                        leading: CircleAvatar(),
+                        title: Text('Paciente X'),
+                        subtitle: Text(
+                            'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum '),
+                      ));
+                }),
+          )
+        ],
       ),
-    );
+    ));
   }
 }
