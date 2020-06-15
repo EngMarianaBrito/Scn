@@ -26,7 +26,6 @@ class NutricionistListController extends GetController {
 
   void changeSearchQuery(String value){
     searchQuery.value = value;
-    print(value);
     update();
   }
 }
