@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:nutricao/app/modules/appointment/pages/review_pacient.dart';
 
 class PacientAppointmentPage extends StatelessWidget {
   @override
@@ -20,20 +22,7 @@ class PacientAppointmentPage extends StatelessWidget {
               Icons.keyboard_arrow_right,
               color: Theme.of(context).primaryColor,
             ),
-          ),
-          ListTile(
-            title: Text('Dr. Anderson'),
-            subtitle: Text('Objetivo: Emagrecer'),
-            leading: CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              foregroundColor: Theme.of(context).primaryColor,
-              backgroundImage:
-                  NetworkImage('https://i.stack.imgur.com/Qt4JP.png'),
-            ),
-            trailing: Icon(
-              Icons.keyboard_arrow_right,
-              color: Theme.of(context).primaryColor,
-            ),
+            onTap: () => Get.to(ReviewAppointment()),
           )
         ],
       ),

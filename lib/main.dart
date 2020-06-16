@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/home/page/home_page.dart';
 import 'package:nutricao/app/modules/login/pages/login_page.dart';
+import 'package:nutricao/app/modules/nutrcionist/pages/nutrcionist_request_page.dart';
 import 'package:nutricao/app/modules/register/pages/register_page.dart';
 import 'package:nutricao/app/modules/splashscreen/page/splashscreen_page.dart';
 import 'package:nutricao/app/shared/theme.dart';
@@ -15,6 +16,7 @@ void main() {
       '/home': GetRoute(page: HomePage()),
       '/login': GetRoute(page: LoginPage()),
       '/register': GetRoute(page: RegisterPage()),
+      '/nutricionist_request': GetRoute(page: NutricionistRequestPage()),
     },
     theme: appTheme('patient'),
   ));

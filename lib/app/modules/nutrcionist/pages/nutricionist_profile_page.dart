@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
-import 'package:nutricao/app/modules/nutrcionist/pages/nutrcionist_request_page.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ProfileNutricionistPage extends StatefulWidget {
@@ -85,7 +84,7 @@ class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
                 Container(
                   alignment: Alignment.centerRight,
                   child: FlatButton(
-                    onPressed: () => Get.to(NutricionistRequestPage()),
+                    onPressed: () => Get.toNamed('/nutricionist_request'),
                     color: Theme.of(context).primaryColor,
                     child: Text(
                       'Solicitar consulta',

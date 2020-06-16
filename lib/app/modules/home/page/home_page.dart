@@ -12,14 +12,12 @@ class HomePage extends StatelessWidget {
   final SplashScreenController splashController =
       Get.find<SplashScreenController>();
 
-  final List<Widget> tabs = [
-    NutricionistListPage(),
-    PacientAppointmentPage()
-  ];
+  final Globals globals = Get.find();
+
+  final List<Widget> tabs = [NutricionistListPage(), PacientAppointmentPage()];
 
   @override
   Widget build(BuildContext context) {
-    final Globals globals = Get.find();
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
