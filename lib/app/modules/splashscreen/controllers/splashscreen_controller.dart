@@ -2,11 +2,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:nutricao/app/shared/theme.dart';
 import 'package:path_provider/path_provider.dart';
 
 class SplashScreenController extends RxController {
   Box box;
   Dio dio;
+
+  //set Account Type
+  int get accountType => box.get('account_type');
 
   dynamic init() async {
     var dir = await getApplicationDocumentsDirectory();
@@ -20,6 +24,9 @@ class SplashScreenController extends RxController {
 
     //init Dio
     dio = Dio(options);
+
+    //set Theme
+    Get.changeTheme(appTheme(accountType == 1 ? 'nutritionist' : 'patient'));
 
     setPage(box.get('isLogged') == null ? false : box.get('isLogged'));
   }

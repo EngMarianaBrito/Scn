@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/home/controllers/home_controller.dart';
 import 'package:nutricao/app/modules/login/controllers/login_controller.dart';
-import 'package:nutricao/app/modules/nutrcionist/pages/nutricionists_list_page.dart';
 import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_controller.dart';
-import 'package:nutricao/app/modules/appointment/pages/pacient_page.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,8 +11,6 @@ class HomePage extends StatelessWidget {
       Get.find<SplashScreenController>();
 
   final Globals globals = Get.find();
-
-  final List<Widget> tabs = [NutricionistListPage(), PacientAppointmentPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +81,22 @@ class HomePage extends StatelessWidget {
                         ? Theme.of(context).primaryColor
                         : Colors.grey,
                   ),
-                ))
+                )),
+            splashController.box.get('account_type') == 1
+                ? BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    title: Text(
+                      'Pacientes',
+                      style: TextStyle(
+                        color: controller.currentIndex.value == 3
+                            ? Theme.of(context).primaryColor
+                            : Colors.grey,
+                      ),
+                    ))
+                : Container(
+                    width: 0.0,
+                    height: 0.0,
+                  ),
           ],
         ),
       ),
@@ -94,7 +105,9 @@ class HomePage extends StatelessWidget {
           Get.delete<LoginController>();
         },
         builder: (_) {
-          return tabs[controller.currentIndex.value];
+          return splashController.accountType == 1
+              ? controller.tabsNutricionist[controller.currentIndex.value]
+              : controller.tabsPacient[controller.currentIndex.value];
         },
       ),
     );
