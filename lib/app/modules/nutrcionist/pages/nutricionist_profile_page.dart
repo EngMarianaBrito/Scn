@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:nutricao/app/modules/nutrcionist/controllers/nutricionist_profile_controller.dart';
+import 'package:nutricao/app/modules/nutrcionist/pages/nutricionist_send_rating_page.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ProfileNutricionistPage extends StatefulWidget {
+  final int nutricionistId;
   final double rating;
   final String name, formation, profileImage, descripition;
-  ProfileNutricionistPage(this.name, this.formation, this.rating,
+  ProfileNutricionistPage(this.nutricionistId, this.name, this.formation, this.rating,
       this.profileImage, this.descripition);
 
   @override
@@ -75,6 +77,9 @@ class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
                     allowHalfRating: true,
                     spacing: 2.0,
                   ),
+                  onTap: () {
+                    Get.to(NutricionistSendRatingPage(widget.nutricionistId));
+                  },
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
@@ -111,7 +116,7 @@ class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
           ),
           Expanded(
             child: FutureBuilder(
-                future: controller.fetchNutricionist(),
+                future: controller.fetchRating(widget.nutricionistId),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(

@@ -22,7 +22,7 @@ class RegisterController extends RxController {
   void setProfileImage() async {
     try {
       pickedFile = await ImagePicker()
-          .getImage(source: ImageSource.camera, imageQuality: 50);
+          .getImage(source: ImageSource.camera, imageQuality: 40);
       profileImage.value = pickedFile.path.toString();
 
       img = File(pickedFile.path);

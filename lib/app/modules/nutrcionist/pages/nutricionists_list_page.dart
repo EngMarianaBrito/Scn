@@ -77,6 +77,7 @@ class NutricionistListPage extends StatelessWidget {
                                 .value ==
                             '') {
                       return CardNutricionist(
+                          infos[index - 1].userId,
                           infos[index - 1].name,
                           infos[index - 1].formation,
                           infos[index - 1].stars.toDouble(),
@@ -87,6 +88,7 @@ class NutricionistListPage extends StatelessWidget {
                             .searchQuery
                             .value)) {
                       return CardNutricionist(
+                          infos[index - 1].userId,
                           infos[index - 1].name,
                           infos[index - 1].formation,
                           infos[index - 1].stars.toDouble(),

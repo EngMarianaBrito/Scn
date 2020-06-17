@@ -34,7 +34,7 @@ class Datum {
 
     final int id;
     final int userId;
-    final int stars;
+    final dynamic stars;
     final String name;
     final dynamic description;
     final String formation;
