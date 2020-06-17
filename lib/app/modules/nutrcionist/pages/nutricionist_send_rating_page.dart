@@ -7,7 +7,8 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 class NutricionistSendRatingPage extends StatelessWidget {
   final int nutricionistId;
   final Globals globals = Get.find();
-  final NutricionistProfileController controller = Get.find<NutricionistProfileController>();
+  final NutricionistProfileController controller =
+      Get.find<NutricionistProfileController>();
   NutricionistSendRatingPage(this.nutricionistId);
 
   @override
@@ -55,26 +56,35 @@ class NutricionistSendRatingPage extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.only(top: 20.0),
-              child: TextFormField(
-                onChanged: controller.setComment,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  labelText: 'Comentário',
-                  hintText: 'Deixe um comentário'
-                ),
+              child: GetBuilder<NutricionistProfileController>(
+                builder: (_) {
+                  return TextFormField(
+                    onChanged: controller.setComment,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      labelText: 'Comentário',
+                      hintText: 'Deixe um comentário',
+                      errorText: controller.errorComment,
+                    ),
+                  );
+                },
               ),
             ),
             Container(
               margin: EdgeInsets.only(top: 20.0),
               alignment: Alignment.centerRight,
               child: FlatButton(
-                onPressed: () => controller.sendNutricionistRating(nutricionistId),
+                onPressed: (){
+                  if(controller.validForm){
+                    controller.sendNutricionistRating(nutricionistId);
+                  } else {
+                    Get.snackbar('Ops!', 'Preencha os campos corretamente');
+                  }                    
+                },
                 color: Theme.of(context).primaryColor,
                 child: Text(
                   'Avaliar',
-                  style: TextStyle(
-                    color: Colors.white
-                  ),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
