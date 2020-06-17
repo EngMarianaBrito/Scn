@@ -82,21 +82,16 @@ class HomePage extends StatelessWidget {
                         : Colors.grey,
                   ),
                 )),
-            splashController.box.get('account_type') == 1
-                ? BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    title: Text(
-                      'Pacientes',
-                      style: TextStyle(
-                        color: controller.currentIndex.value == 3
-                            ? Theme.of(context).primaryColor
-                            : Colors.grey,
-                      ),
-                    ))
-                : Container(
-                    width: 0.0,
-                    height: 0.0,
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                title: Text(
+                  'Pacientes',
+                  style: TextStyle(
+                    color: controller.currentIndex.value == 3
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey,
                   ),
+                )),
           ],
         ),
       ),

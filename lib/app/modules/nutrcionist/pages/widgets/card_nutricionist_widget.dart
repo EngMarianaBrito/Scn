@@ -5,13 +5,13 @@ import 'package:nutricao/app/modules/nutrcionist/pages/nutricionist_profile_page
 
 class CardNutricionist extends StatelessWidget {
   final double rating;
-  final String name, formation, profileImage;
-  CardNutricionist(this.name, this.formation, this.rating, this.profileImage);
+  final String name, formation, profileImage, descripition;
+  CardNutricionist(this.name, this.formation, this.rating, this.profileImage, this.descripition);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () => Get.to(ProfileNutricionistPage(name, formation, rating, profileImage)),
+      onTap: () => Get.to(ProfileNutricionistPage(name, formation, rating, profileImage, descripition)),
       title: Text(name),
       subtitle: Container(
           margin: EdgeInsets.only(top: 5.0),

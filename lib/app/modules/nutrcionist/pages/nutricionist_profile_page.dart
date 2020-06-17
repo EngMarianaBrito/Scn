@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:nutricao/app/modules/nutrcionist/controllers/nutricionist_profile_controller.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ProfileNutricionistPage extends StatefulWidget {
   final double rating;
-  final String name, formation, profileImage;
-  ProfileNutricionistPage(
-      this.name, this.formation, this.rating, this.profileImage);
+  final String name, formation, profileImage, descripition;
+  ProfileNutricionistPage(this.name, this.formation, this.rating,
+      this.profileImage, this.descripition);
 
   @override
   _ProfileNutricionistPageState createState() =>
@@ -16,6 +17,8 @@ class ProfileNutricionistPage extends StatefulWidget {
 
 class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
   var top = 0.0;
+  final NutricionistProfileController controller =
+      Get.put<NutricionistProfileController>(NutricionistProfileController());
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +79,7 @@ class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
                 Container(
                   margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
                   child: Text(
-                    'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem'
-                    'ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum;',
+                    widget.descripition ?? 'Sem descrição.',
                     style: TextStyle(fontSize: 16.0),
                   ),
                 ),
@@ -108,19 +110,83 @@ class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: 2 + 1,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) {
-                  return Container(
-                      margin: EdgeInsets.only(top: 5.0),
-                      child: ListTile(
-                        leading: CircleAvatar(),
-                        title: Text('Paciente X'),
-                        subtitle: Text(
-                            'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum '),
-                      ));
+            child: FutureBuilder(
+                future: controller.fetchNutricionist(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: new AlwaysStoppedAnimation<Color>(
+                            Get.theme.primaryColor),
+                      ),
+                    );
+                  } else {
+                    var data = controller.data.data;
+
+                    if (data.length == 0) {
+                      return Container(
+                        margin: EdgeInsets.only(top: 40.0),
+                        child: Text(
+                          'Ainda não há avaliações para este profissional.',
+                          style: TextStyle(
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      );
+                    }
+
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        scrollDirection: Axis.vertical,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 15.0),
+                            child: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    foregroundColor:
+                                        Theme.of(context).primaryColor,
+                                    backgroundImage: NetworkImage(
+                                        data[index].profileImage.toString()),
+                                  ),
+                                  title: Text(
+                                    data[index].name,
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                    ),
+                                  ),
+                                  trailing: SmoothStarRating(
+                                    rating: data[index].rating,
+                                    isReadOnly: true,
+                                    size: 20,
+                                    filledIconData: Icons.star,
+                                    halfFilledIconData: Icons.star_half,
+                                    defaultIconData: Icons.star_border,
+                                    starCount: 5,
+                                    allowHalfRating: true,
+                                    spacing: 2.0,
+                                  ),
+                                ),
+                                Container(
+                                  padding:
+                                      EdgeInsets.only(left: 20.0, right: 20.0),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    data[index].comment,
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                  }
                 }),
           )
         ],

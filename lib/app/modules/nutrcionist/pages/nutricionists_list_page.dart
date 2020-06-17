@@ -68,21 +68,30 @@ class NutricionistListPage extends StatelessWidget {
                           child: Text('Ainda não há profissionais disponíveis'),
                         ),
                       );
-                    } else if (Get.find<NutricionistListController>().searchQuery.value ==
+                    } else if (Get.find<NutricionistListController>()
+                                .searchQuery
+                                .value ==
                             null ||
-                        Get.find<NutricionistListController>().searchQuery.value == '') {
+                        Get.find<NutricionistListController>()
+                                .searchQuery
+                                .value ==
+                            '') {
                       return CardNutricionist(
                           infos[index - 1].name,
                           infos[index - 1].formation,
                           infos[index - 1].stars.toDouble(),
-                          infos[index - 1].profileImage);
+                          infos[index - 1].profileImage,
+                          infos[index - 1].description);
                     } else if (infos[index - 1].name.toLowerCase().contains(
-                        Get.find<NutricionistListController>().searchQuery.value)) {
+                        Get.find<NutricionistListController>()
+                            .searchQuery
+                            .value)) {
                       return CardNutricionist(
                           infos[index - 1].name,
                           infos[index - 1].formation,
                           infos[index - 1].stars.toDouble(),
-                          infos[index - 1].profileImage);
+                          infos[index - 1].profileImage,
+                          infos[index - 1].description);
                     } else {
                       return Container();
                     }
