@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:nutricao/app/modules/appointment/pages/review_pacient.dart';
+import 'package:nutricao/app/modules/appointment/pages/patient_review.dart';
 
-class PacientAppointmentPage extends StatelessWidget {
+class PatientAppointmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -107,7 +107,7 @@ class HomePage extends StatelessWidget {
         builder: (_) {
           return splashController.accountType == 1
               ? controller.tabsNutricionist[controller.currentIndex.value]
-              : controller.tabsPacient[controller.currentIndex.value];
+              : controller.tabsPatient[controller.currentIndex.value];
         },
       ),
     );
