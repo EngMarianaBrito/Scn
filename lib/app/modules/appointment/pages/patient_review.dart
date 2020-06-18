@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
+import 'package:nutricao/app/modules/nutrcionist/models/nutricionist_request_model.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
 class ReviewAppointment extends StatelessWidget {
+  final Datum data;
+  ReviewAppointment(this.data);
+
   final Globals globals = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -32,15 +37,17 @@ class ReviewAppointment extends StatelessWidget {
                 backgroundColor: Theme.of(context).primaryColor,
                 foregroundColor: Theme.of(context).primaryColor,
                 backgroundImage:
-                    NetworkImage('https://i.stack.imgur.com/Qt4JP.png'),
+                    NetworkImage(data.profileImage),
               ),
-              trailing: Icon(
-                Icons.keyboard_arrow_right,
-                color: Theme.of(context).primaryColor,
-              ),
-              title: Text('Dr. Anderson Oliveira'),
+              title: Text(data.nutricionistName),
               subtitle: Text('Responsável por este diagnóstico'),
-              onTap: () => Get.toNamed('/nutricionist_request'),
+            ),
+            Container(
+              alignment: Alignment.centerRight,
+              child: Text(
+                (data.status == 0 ? 'Ainda não aceito pelo Nutricionista.' : data.status == 1 ? 'Em andamento' : 'Finalizado'),
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
             ),
             Container(
               width: _width,
@@ -54,10 +61,7 @@ class ReviewAppointment extends StatelessWidget {
               width: _width,
               margin: EdgeInsets.only(top: 20.0),
               child: Text(
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem'
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem'
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem'
-                'Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
+                data.report ?? 'Ainda não há um relatório.',
                 style: TextStyle(fontSize: 16.0),
               ),
             ),
@@ -73,10 +77,7 @@ class ReviewAppointment extends StatelessWidget {
               width: _width,
               margin: EdgeInsets.only(top: 20.0),
               child: Text(
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem'
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem'
-                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem'
-                'Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum',
+                data.comments ?? 'Ainda não há observações sobre esta consulta.',
                 style: TextStyle(fontSize: 16.0),
               ),
             ),
@@ -92,7 +93,7 @@ class ReviewAppointment extends StatelessWidget {
               width: _width,
               margin: EdgeInsets.only(top: 20.0),
               child: Text(
-                'Não há conteúdo extra adicionado a esta consulta.',
+                data.extraContent ?? 'Não há conteúdo extra adicionado a esta consulta.',
                 style: TextStyle(fontSize: 16.0),
               ),
             ),

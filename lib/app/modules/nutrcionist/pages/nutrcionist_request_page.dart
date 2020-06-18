@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nutricao/app/modules/nutrcionist/controllers/nutricionist_list_controller.dart';
 import 'package:nutricao/app/shared/globals.dart';
 
 class NutricionistRequestPage extends StatelessWidget {
@@ -29,46 +30,79 @@ class NutricionistRequestPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
+                  child: GetBuilder<NutricionistListController>(builder: (_) {
+                    return TextFormField(
+                      onChanged: _.setWeight,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
                         hintText: '(opicional)',
                         labelText: 'Seu peso (opicional)',
-                        suffixText: 'Kg'),
-                  ),
+                        suffixText: 'Kg',
+                      ),
+                    );
+                  }),
                 ),
-                SizedBox(width: 10.0, height: 0.0,),
+                SizedBox(
+                  width: 10.0,
+                  height: 0.0,
+                ),
                 Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        hintText: '(opicional)',
-                        labelText: 'Sua altura (opicional)',
-                        suffixText: 'm'),
+                  child: GetBuilder<NutricionistListController>(
+                    builder: (_) {
+                      return TextFormField(
+                        keyboardType: TextInputType.number,
+                        onChanged: _.setHieght,
+                        decoration: InputDecoration(
+                          hintText: '(opicional)',
+                          labelText: 'Sua altura (opicional)',
+                          suffixText: 'm',
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
             ),
             Container(
               margin: EdgeInsets.only(top: 10.0),
-              child: TextFormField(
-                maxLines: 6,
-                decoration: InputDecoration(
-                    hintText:
-                        'Informe o motivo da sua consulta, ex.: Desejo emagrecer ..',
-                    labelText: 'Motivo'),
+              child: GetBuilder<NutricionistListController>(
+                builder: (_) {
+                  return TextFormField(
+                    maxLines: 6,
+                    onChanged: _.setReason,
+                    decoration: InputDecoration(
+                      hintText:
+                          'Informe o motivo da sua consulta, ex.: Desejo emagrecer ..',
+                      labelText: 'Motivo',
+                      errorText: _.errorReason,
+                    ),
+                  );
+                },
               ),
             ),
             Container(
               alignment: Alignment.centerRight,
               margin: EdgeInsets.only(top: 10.0),
               child: FlatButton(
-                  onPressed: () {},
-                  color: Theme.of(context).primaryColor,
-                  child: Text(
-                    'Solicitar',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  )),
+                onPressed: () {
+                  var controller = Get.find<NutricionistListController>();
+
+                  if (controller.validForm) {
+                    controller
+                        .sendAppointment(Get.parameters['nutricionistId']);
+                  } else {
+                    Get.snackbar(
+                        'Ops!', 'Preencha todos os campos corretamente.');
+                  }
+                },
+                color: Theme.of(context).primaryColor,
+                child: Text(
+                  'Solicitar',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             )
           ],
         ),

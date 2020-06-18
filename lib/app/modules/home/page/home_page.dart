@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
       ),
       bottomNavigationBar: GetX<HomeController>(
         builder: (_) => BottomNavigationBar(
-          onTap: controller.changeIndex,
+          onTap: (index) => controller.changeIndex(index),
           currentIndex: controller.currentIndex.value,
           items: [
             BottomNavigationBarItem(
@@ -83,9 +83,13 @@ class HomePage extends StatelessWidget {
                   ),
                 )),
             BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: Icon(splashController.box.get('account_type') == 0
+                      ? Icons.image
+                      : Icons.person,),
                 title: Text(
-                  'Pacientes',
+                  splashController.box.get('account_type') == 0
+                      ? 'Galeria'
+                      : 'Pacientes',
                   style: TextStyle(
                     color: controller.currentIndex.value == 3
                         ? Theme.of(context).primaryColor

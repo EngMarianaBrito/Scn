@@ -16,7 +16,7 @@ void main() {
       '/home': GetRoute(page: HomePage()),
       '/login': GetRoute(page: LoginPage()),
       '/register': GetRoute(page: RegisterPage()),
-      '/nutricionist_request': GetRoute(page: NutricionistRequestPage()),
+      '/nutricionist_request/:nutricionistId': GetRoute(page: NutricionistRequestPage()),
     },
     theme: appTheme('patient'),
   ));

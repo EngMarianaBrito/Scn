@@ -26,17 +26,19 @@ class NutricionistDataRating {
     try {
       String token = Get.find<SplashScreenController>().box.get('token');
 
-      var response = await Get.find<SplashScreenController>().dio.post(
-          "/rating",
-          data: {
-            "comment": comment,
-            "rating": rating,
-            "nutricionist_id": nutricionistId
-          },
-          options: Options(headers: {'Authorization': 'Bearer $token'}));
-
-          print(response.data);
-
+      await Get.find<SplashScreenController>().dio.post(
+            "/rating",
+            data: {
+              "comment": comment,
+              "rating": rating,
+              "nutricionist_id": nutricionistId
+            },
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+              },
+            ),
+          );
       return true;
     } catch (e) {
       print(e.toString());

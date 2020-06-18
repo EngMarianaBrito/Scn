@@ -14,6 +14,7 @@ class NutricionistListPage extends StatelessWidget {
         initState: (_) {
           NutricionistListController.to.fetchNutricionist();
         },
+        autoRemove: true,
         builder: (_) {
           if (_.data == null) {
             return Center(

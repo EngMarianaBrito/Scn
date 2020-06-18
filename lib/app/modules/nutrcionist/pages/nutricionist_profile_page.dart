@@ -91,7 +91,7 @@ class _ProfileNutricionistPageState extends State<ProfileNutricionistPage> {
                 Container(
                   alignment: Alignment.centerRight,
                   child: FlatButton(
-                    onPressed: () => Get.toNamed('/nutricionist_request'),
+                    onPressed: () => Get.toNamed('/nutricionist_request/' + widget.nutricionistId.toString()),
                     color: Theme.of(context).primaryColor,
                     child: Text(
                       'Solicitar consulta',

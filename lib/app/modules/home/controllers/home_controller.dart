@@ -9,10 +9,13 @@ import 'package:nutricao/app/modules/splashscreen/controllers/splashscreen_contr
 class HomeController extends RxController {
   static SplashScreenController get to => Get.find();
 
-  final List<StatelessWidget> tabsPatient = [
+  final List<dynamic> tabsPatient = [
     NutricionistListPage(),
     PatientAppointmentPage(),
-    Container(),
+    Container(
+      alignment: Alignment.center,
+      child: Text('Em breve...'),
+    ),
   ];
 
   final List<StatelessWidget> tabsNutricionist = [
